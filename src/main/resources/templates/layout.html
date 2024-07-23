@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<!-- namespace th tem todos os componentes do thymeleaf para trabalhar na pagina, tanto a parte de fragmentos das paginas como os componentes p trabalhar com os formularios, lista de dados e outros -->
+<!-- namespace layout facilita o trabalho com paginas dinamicas, q n tem o conteudo totalmente estatico, no caso desse projeto ira ajudar porque tem conteudos q mudam de pagina p pagina -->
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml"
+				xmlns:th="http://www.thymeleaf.org"
+				xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+	<title>Spring-Boot Básico</title>
+	<meta charset="UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+	<meta name="description" content="" />
+	<meta name="author" content="" />
+	<link rel="icon" href="/image/favicon.png" />
+
+	<!-- webjars sao bibliotecas .jar onde tem as bibliotecas de css, js e algumas imagens. ao inves de baixar os arquivos de bootstrap, jquery, apenas adiciona essas bibliotecas -->
+	<!-- Bootstrap core CSS -->
+	<link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="/webjars/open-iconic/font/css/open-iconic-bootstrap.min.css" rel="stylesheet" />
+	
+	<!-- Custom styles for this template -->
+	<link href="/css/style.css" rel="stylesheet" />
+</head>
+<body>
+	<!-- 4 tipos de componentes de fragmentos 
+			pagina de fragmento()
+		th:fragment - informar q o trecho de codigo html dentro de uma pagina é um fragmento. vai estar presente na tag q quer inserir na pagina de destino
+		
+			pagina de destino()
+		'th:insert="footer :: copy"' - footer é o nome da pagina q contem o fragmento, copy é o nome do fragmento
+		th:insert - fragmento é inserido dentro da tag div
+		th:include - fragmento vai substituir a tag div. quando a pagina for renderizada, o div some e aparece a tag footer
+		th:replace - é incluido apenas o conteudo da tag footer e div é mantido-->
+	<header th:replace="fragments/header :: cabecalho">
+		<div>header</div>
+	</header>
+	
+	<!-- vai representar o layout main, vai ter o sidebar e o conteudo principal da pagina -->
+	<div class="layout-main">
+		<aside>
+			<nav th:replace="fragments/sidebar :: nav-sidebar">
+				<span>menu</span>
+			</nav>
+		</aside>
+		
+		<!--  -->
+		<section layout:fragment="corpo">
+			<div>conteudo das paginas</div>
+		</section>
+	</div>	
+	
+	<footer th:replace="fragments/footer :: rodape">
+		<div>footer</div>
+	</footer>
+	
+	<!-- vai aparecer em todas as paginas, assim como na tag head -->
+	
+	<!-- Bootstrap core JavaScript
+    ================================================== -->
+	<!-- Placed at the end of the document so the pages load faster -->
+	<!-- ex: acesse o link do bootstrap no site do webjars e entre em src, abra o arquivo e aparecera o path q devera colocar em src. existem 2 parametros p path -->
+	<script src="/webjars/jquery/jquery.min.js"></script>
+	<!-- mascara usada pelo javascript -->
+	<script src="/webjars/jquery-mask-plugin/dist/jquery.mask.min.js"></script>
+	<script	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+	<script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+	<script type="text/javascript">
+	    
+		var url = '';
+		
+	  	//vai identificar q clicou no botao a partir da expressao abaixo 
+	  	//id* p q saiba q ta analisando o valor do id, recebe btn_
+	  	//sempre q clicar em um componente q tenha btn_ como valor inicial do id, vai cair na funcao
+		$('button[id*="btn_"]').click(function(){
+			//vai concatenar a url com o valor do id q tem na tag button
+			// $(this) faz com q o jquery utilize os valores do componente q esta utilizando nessa operacao, o button. vai recuperar o valor do id atravez do attr
+			//so q quer toda a url sem o btn_, vai dividir a string em um array de 2 partes e vai pegar a segunda
+			url = "http://localhost:8081/" + $(this).attr('id').split("_")[1];
+		})
+	
+		//tem q passar a url p o botao de confirmacao do modal
+		//vai esperar o click do botao, so q vai ser do q tem o id ok_confirm
+		$('#ok_confirm').click(function(){
+			//vai fazer a solicitacao p o servidor a partir da url
+			document.location.href = url;
+		})
+		
+		$(function() {
+			$('[data-toggle="popover"]').popover();
+		});
+		
+		$(document).ready(function(){
+		    $(".navbar-toggle").click(function(){
+		        $(".sidebar").toggleClass("sidebar-open");
+		    })
+		});
+
+	</script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+	spring ioc
+-injecao de dependencias é um padrao de projeto, para diminuir o acoplamento. a melhor forma de trabalhar com baixo acoplamento é trabalhar com interfaces, 
+-n precisa ter uma diferente iplementacao a cada projeto, entao n precisa de interface, ex, classe q remove espacos duplicados, converte p uppercase...
+-dependencia é um objeto q a classe depende p funcionar
+
+-inversao de controles, tira do programador a obrigacao de instanciar objetos. a responsabilidade passa p um container q implementa o padrao de injecao de dependencias e inversao de controle.
+
+-no spring p trabalhar com injecao de dependencia, precisa trabalhar com beans, q sao as classes q vc passa a responsabilidade do gerenciamento delas p spring. usase anotacoes.
+@component: é usada quando n se define um bean especifico como repository ou service.
+@repository: especifica q a classe é do tipo persistente. o spring libera recursos extras, como tratar exceçoes especificas.
+@bean: 
+@service: classe q possui regra de negocio.
+@autowired: pode ser declarada em metodos de instancia como set e construtores
+
+	spring mvc
+-pode ser usado com jsf, jsp, 
+-tem como objetivo dividir a aplicacao em 3.
+model, define o modelo ou dominio da aplicacao. view, interacao com o usuario. controller, vai receber as requisicoes do usuario q parte do view, requisitao ao model algo q o usuario solicitou.
+-padroes: strategy, template method, mvc dao dto, command factory, singleton, abstract factory,
+ 
+-anotacoes p substituir requestmethod, @getmapping, @postmapping, @putmapping, @deletemapping, @patchmapping
+@pathvariable: evia parametros na url em forma de path. 
+@requestparam: no corpo do metodo
+@modelattribute: o spring seta no objeto os dados informados no formularios da pagina quando da submit. no thymelead n é necessario. se usar na assinatura do metodo, ele é executado como retorno p a pagina, preenchendo algum dado no formulario.
+
+-retornar dados:
+@modelmap: coloca como parametro no metodo, adiciona o objeto no modelmap e retorna um string dizendo qual a pagina sem a extensao.
+@modelandview: instancia o mav com a pagina de resposta no construtor, adiciona o objeto no mav e retorna esse objeto. pode usar as duas anotacoes juntas.
+-parametro mm, adicionar o objeto ao mm e retornar uma instancia de mav com mm adicionado com o nome da pagina de retorno.
+-redirect: usado p abrir outra pagina. apos salvar um objeto, pode pedir se quer redirecionar p listagem ou n.
+return "redirect:/computadores/listagem"
+
+	spring boot
+-
+
+

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8"/>
+</head>
+<body>
+	
+	    <section class="layout-content" layout:fragment="corpo">
+	
+	        <nav class="navbar navbar-expand-md bg-light">
+	            <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+	                <ul class="navbar-nav mr-auto">
+	                    <li class="nav-item active">
+	                        <i class="oi oi-caret-right"></i>
+	                        <span>Cadastrar Departamentos</span>
+	                    </li>
+	                </ul>
+	                <a class="btn btn-primary btn-md" href="/departamentos/listar" role="button">
+	                    <span class="oi oi-spreadsheet" title="Listar" aria-hidden="true"></span>
+	                    <span>Listar Departamentos</span>
+	                </a>
+	            </div>
+	        </nav>
+	
+	        <div class="container" id="cadastro">
+	        
+	        <!-- vai utilizar a propria pagina html como fragmento -->
+	        <div th:replace="fragments/alert"></div>
+	        
+	        <!-- sempre q for trabalhar com url no thymeleaf, usa a expressao @{} -->
+	        <!-- a expressao no componente object, representa uma variavel. essa variavel é responsavel por enviar os dados pro controller como um objeto, ou quando faz o update, os dados q vem pro formulario, antes da operacao update vai ser trazido por essa variavel -->
+	        <!-- o objeto departamento vai receber uma instancia enviada pelo parametro do metodo do controller -->
+	            <!-- preparar p lidar com 2 urls, 1 q vai redirecionar p metodo salvar e outra q vai pro metodo editar. pega a variavel departamento e testa se o ide é nulo, se for entao vai incluir senao, vai editar -->
+	            <form th:action="${departamento.id == null} ? @{/departamentos/salvar} : @{/departamentos/editar}" th:object="${departamento}" method="POST">
+	                
+	                <div th:replace="fragments/validacao :: validacao"></div>
+	                
+	                <div class="form-row">
+	                    <div class="form-group col-md-6">
+	                        <label for="nome">Departamento</label>
+	                        <!-- th:field esta diretamente vinculado com o th:object. nome do atributo o qual esse campo esta vinculado. o spring e o thymeleaf cria o objeto departamento e gerar esse objeto ja com os valores setados em cada um dos seus atributos para entregar pro controller -->
+	                        <input type="text" class="form-control" id="nome"
+	                               placeholder="Nome Departamento" autofocus="autofocus" th:field="*{nome}"/>
+	                    </div>
+	                </div>
+	                <!-- input é do tipo hidden p q o id n apareca na pagina e fico so registrado no codigo. o id deve ir junto quando for fazer o update -->
+	                <input type="hidden" id="id" th:field="*{id}" />
+	                <button type="submit" class="btn btn-primary btn-sm">Salvar</button>
+	            </form>
+	        </div>
+	    </section>
+	
+</body>
+</html>

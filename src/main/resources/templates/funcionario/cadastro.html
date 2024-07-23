@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8"/>
+</head>
+<body>
+	
+	    <section class="layout-content" layout:fragment="corpo">
+	        <div class="page-header">
+	            <nav class="navbar navbar-expand-md navbar-top bg-light">
+	                <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+	                    <ul class="navbar-nav">
+	                        <li class="nav-item active">
+	                            <i class="oi oi-caret-right"></i>
+	                            <span>Cadastrar Funcionários</span>
+	                        </li>
+	                    </ul>
+	                </div>
+	                <a class="btn btn-primary btn-md" href="@{/funcionarios/listar}" role="button">
+	                    <span class="oi oi-spreadsheet" title="Cadastro" aria-hidden="true"></span>
+	                    <span>Listar Funcionários</span>
+	                </a>
+	            </nav>
+	        </div>
+	
+	        <div class="container" id="cadastro">
+	        
+	        	<div th:replace="fragments/alert"></div>
+	        
+	            <form th:action="${funcionario.id == null} ? @{/funcionarios/salvar} : @{/funcionarios/editar}" th:object="${funcionario}" method="POST">
+	                <div class="form-row">
+	                    <div class="form-group col-md-6">
+	                        <label for="nome">Nome do Funcionário</label>
+	                        <!-- class append faz com q possa trocar o tipo de classe do css em tempo de execucao. haserros recebe como parametro o nome do campo q esta validando -->
+	                        <input type="text" class="form-control" id="nome" placeholder="Nome Completo"
+	                               autofocus="autofocus" th:field="*{nome}"
+	                               th:classappend="${#fields.hasErrors('nome')} ? 'is-invalid'" />
+	                        <div class="invalid-feedback">
+	                        	<!-- expressao referente ao campo. quando o campo nome n passar na validacao uma mensagem sera exibida em baixo do input  -->
+								<span th:errors="*{nome}"></span>
+	                        </div>
+	                    </div>
+	                    <div class="form-group col-md-6">
+	                        <label for="salario">Salário Bruto</label>
+	                        <!-- mascara sera ativada pelo javascript no data-mask -->
+	                        <input type="text" class="form-control" id="salario" data-mask="#.##0,00"
+	                               data-mask-reverse="true" th:field="*{salario}" 
+	                               th:classappend="${#fields.hasErrors('salario')} ? 'is-invalid'"/>
+	                        <div class="invalid-feedback">
+	                        	<span th:errors="*{salario}"></span>
+	                        </div>
+	                    </div>
+	                </div>
+	                <div class="form-row">
+	                    <div class="form-group col-md-6">
+	                        <label for="dataEntrada">Data de Entrada</label>
+	                        <input type="date" class="form-control" id="dataEntrada" th:field="*{dataEntrada}"
+	                        th:classappend="${#fields.hasErrors('dataEntrada')} ? 'is-invalid'" />
+	                        <div class="invalid-feedback">
+								<span th:errors="*{dataEntrada}"></span>
+	                        </div>
+	                    </div>
+	                    <div class="form-group col-md-6">
+	                        <label for="dataSaida">Data de Saída</label>
+	                        <input type="date" class="form-control" id="dataSaida" th:field="*{dataSaida}"
+	                        th:classappend="${#fields.hasErrors('dataSaida')} ? 'is-invalid'" />
+	                        <div class="invalid-feedback">
+								<span th:errors="*{dataSaida}"></span>
+	                        </div>
+	                    </div>
+	                </div>
+	                <div class="form-row">
+	                    <div class="form-group col-md-6">
+	                        <label for="cargo">Cargo</label>
+	                        <select id="cargo" class="form-control" th:field="*{cargo}"
+	                        th:classappend="${#fields.hasErrors('cargo')} ? 'is-invalid'">
+	                            <option value="">Selecione...</option>
+	                            <option th:each="c : ${cargos}" th:value="${c.id}" th:text="${c.nome}" >Auxiliar Contábil</option>
+	                        </select>
+	                        <div class="invalid-feedback">
+								<span th:errors="*{cargo}"></span>
+	                        </div>
+	                    </div>
+	                </div>
+	                <div class="form-row">
+	                    <div class="form-group col-md-6">
+	                        <label for="cidade">Cidade</label>
+	                        <input type="text" class="form-control" id="cidade" th:field="*{endereco.cidade}"
+	                        th:classappend="${#fields.hasErrors('endereco.cidade')} ? 'is-invalid'" />
+	                        <div class="invalid-feedback">
+								<span th:errors="*{endereco.cidade}"></span>
+	                        </div>
+	                    </div>
+	                    <div class="form-group col-md-6">
+	                        <label for="logradouro">Logradouro</label>
+	                        <input type="text" class="form-control" id="logradouro" placeholder="logradouro sem número"
+	                               th:field="*{endereco.logradouro}" th:classappend="${#fields.hasErrors('endereco.logradouro')} ? 'is-invalid'"/>
+	                        <div class="invalid-feedback">
+								<span th:errors="*{endereco.logradouro}"></span>
+	                        </div>
+	                    </div>
+	                </div>
+	                <div class="form-row">
+	                    <div class="form-group col-md-6">
+	                        <label for="numero">Número</label>
+	                        <input type="text" class="form-control" id="numero" th:field="*{endereco.numero}"
+	                        th:classappend="${#fields.hasErrors('endereco.numero')} ? 'is-invalid'" />
+	                        <div class="invalid-feedback">
+								<span th:errors="*{endereco.numero}"></span>
+	                        </div>
+	                    </div>
+	                    <div class="form-group col-md-6">
+	                        <label for="complemento">Complemento</label>
+	                        <input type="text" class="form-control" id="complemento" placeholder="fundos, casa, AP. 102, .."
+	                               th:field="*{endereco.complemento}" th:classappend="${#fields.hasErrors('endereco.complemento')} ? 'is-invalid'"/>
+	                        <div class="invalid-feedback">
+								<span th:errors="*{endereco.complemento}"></span>
+	                        </div>
+	                    </div>
+	                </div>
+	                <div class="form-row">
+	                    <div class="form-group col-md-6">
+	                        <label for="bairro">Bairro</label>
+	                        <input type="text" class="form-control" id="bairro" th:field="*{endereco.bairro}" 
+	                        th:classappend="${#fields.hasErrors('endereco.bairro')} ? 'is-invalid'" />
+	                        <div class="invalid-feedback">
+								<span th:errors="*{endereco.bairro}"></span>
+	                        </div>
+	                    </div>
+	                    <div class="form-group col-md-4">
+	                        <label for="uf">UF</label>
+	                        <select id="uf" class="form-control" th:field="*{endereco.uf}" 
+	                        th:classappend="${#fields.hasErrors('endereco.uf')} ? 'is-invalid'">
+	                            <option value="">Selecione...</option>
+	                            <option th:each="uf : ${ufs}" th:value="${uf}" th:text="${uf.sigla}">AC</option>
+	                        </select>
+	                        <div class="invalid-feedback">
+								<span th:errors="*{endereco.uf}"></span>
+	                        </div>
+	                    </div>
+	                    <div class="form-group col-md-2">
+	                        <label for="cep">Cep</label>
+	                        <input type="text" class="form-control" id="cep" data-mask="00000-000" th:field="*{endereco.cep}"
+	                        th:classappend="${#fields.hasErrors('endereco.cep')} ? 'is-invalid'" />
+	                        <div class="invalid-feedback">
+								<span th:errors="*{endereco.cep}"></span>
+	                        </div>
+	                    </div>
+	                </div>
+	                <input type="hidden" id="id" th:field="*{id}" />
+	                <button type="submit" class="btn btn-primary btn-sm">Salvar</button>
+	            </form>
+	        </div>
+	    </section>
+	
+</body>
+</html>		
